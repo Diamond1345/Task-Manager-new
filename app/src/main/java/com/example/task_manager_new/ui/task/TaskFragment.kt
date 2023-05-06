@@ -5,7 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
+import com.example.task_manager_new.App
 import com.example.task_manager_new.R
+import com.example.task_manager_new.databinding.FragmentTaskBinding
+import com.example.task_manager_new.model.Task
 
 class TaskFragment : Fragment() {
 
@@ -25,15 +31,10 @@ class TaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnSave.setOnClickListener {
-            setFragmentResult(
-                RESULT_TASK,
-                bundleOf(
-                    "task" to Task(
-                        binding.etTitle.text.toString(),
-                        binding.etDesc.text.toString()
-                    )
-                )
-            )
+            App.db.taskDao().insert(Task(
+                title = binding.etTitle.text.toString(),
+                desc = binding.etDesc.text.toString()
+            ))
             findNavController().navigateUp()
         }
     }

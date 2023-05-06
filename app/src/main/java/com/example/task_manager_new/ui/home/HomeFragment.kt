@@ -1,21 +1,15 @@
 package com.example.task_manager_new.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.task_manager_new.App
 import com.example.task_manager_new.R
 import com.example.task_manager_new.databinding.FragmentHomeBinding
-import com.example.task_manager_new.model.Task
 import com.example.task_manager_new.ui.home.adapter.TaskAdapter
-import com.example.task_manager_new.ui.task.TaskFragment
 
 class HomeFragment : Fragment() {
 
@@ -40,10 +34,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFragmentResultListener(TaskFragment.RESULT_TASK) { key, bundle ->
-            val result = bundle.getSerializable("task") as Task
-            adapter.addTask(result)
-        }
+        val tasks = App.db.taskDao().getAll()
+        adapter.addTask(tasks)
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.taskFragment)
