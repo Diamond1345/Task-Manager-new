@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.task_manager_new.R
 import com.example.task_manager_new.databinding.FragmentHomeBinding
 import com.example.task_manager_new.model.Task
+import com.example.task_manager_new.ui.home.adapter.TaskAdapter
 import com.example.task_manager_new.ui.task.TaskFragment
 
 class HomeFragment : Fragment() {
@@ -21,6 +23,12 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var adapter: TaskAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        adapter = TaskAdapter()
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,7 +42,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setFragmentResultListener(TaskFragment.RESULT_TASK) { key, bundle ->
             val result = bundle.getSerializable("task") as Task
-            Log.d("ololo", "onViewCreated: " + result)
+            adapter.addTask(result)
         }
 
         binding.fab.setOnClickListener {
