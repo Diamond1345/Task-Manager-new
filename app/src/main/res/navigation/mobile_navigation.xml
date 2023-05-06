@@ -26,4 +26,9 @@
         android:id="@+id/taskFragment"
         android:name="com.example.task_manager_new.ui.task.TaskFragment"
         android:label="TaskFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        tools:layout="@layout/fragment_profile"
+        android:name="com.example.task_manager_new.ui.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>
