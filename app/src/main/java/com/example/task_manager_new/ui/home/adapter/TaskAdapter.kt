@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.task_manager_new.databinding.ItemTaskBinding
 import com.example.task_manager_new.model.Task
 
-class TaskAdapter:Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(private val onClick: (Task) -> Unit):Adapter<TaskAdapter.TaskViewHolder>() {
     private val data = arrayListOf<Task>()
 
-    fun addTask(list: List<Task>){
+    fun addTasks(list: List<Task>){
         data.clear()
         data.addAll(list)
+        data.sortByDescending { it.id }
         notifyDataSetChanged()
     }
 
@@ -33,6 +34,10 @@ class TaskAdapter:Adapter<TaskAdapter.TaskViewHolder>() {
             binding.tvTitle.text = task.title
             binding.tvDesk.text = task.desc
 
+            itemView.setOnClickListener {
+                onClick(task)
+                false
+            }
         }
     }
 
