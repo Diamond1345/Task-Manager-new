@@ -24,7 +24,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = TaskAdapter(this::onClick)
+        adapter = TaskAdapter(this::onLongClick)
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
         adapter.addTasks(tasks)
     }
 
-    private fun onClick(task: Task){
+    private fun onLongClick(task: Task){
 
         val alertDialog = AlertDialog.Builder(requireContext())
         alertDialog.setTitle("Do you want to delete?")

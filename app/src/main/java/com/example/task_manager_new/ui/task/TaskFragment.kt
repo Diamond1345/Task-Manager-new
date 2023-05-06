@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
@@ -31,10 +32,25 @@ class TaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnSave.setOnClickListener {
-            App.db.taskDao().insert(Task(
+            var data = Task(
                 title = binding.etTitle.text.toString(),
-                desc = binding.etDesc.text.toString()
-            ))
+                desc = binding.etDesc.text.toString(),
+            )
+
+            if (data.title!!.isBlank() || data.desc!!.isBlank()) {
+                Toast.makeText(requireContext(), "Title and desc cannot be empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (data != null) {
+                data!!.title = data.title
+                data!!.desc = data.desc
+                App.db.taskDao().update(data!!)
+            } else {
+                data = Task(title = data.title, desc = data.desc)
+                App.db.taskDao().insert(data!!)
+            }
+
             findNavController().navigateUp()
         }
     }
